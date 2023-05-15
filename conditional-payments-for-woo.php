@@ -32,7 +32,7 @@ require_once dirname(__FILE__)."/menu-page.php";
  */
 add_filter( 'woocommerce_available_payment_gateways', function (array $available_gateways): array {
     if(is_cart() || is_checkout()) {
-        $options = get_option( 'dbi_example_plugin_options' );
+        $options = get_option( 'cpfw_plugin_options' );
 
         //Array ( [cheque] => Array ( [0] => local_pickup ) )
         $restrictions = $options['restrictions'] ?? [];

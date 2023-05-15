@@ -25,8 +25,8 @@ function cpfw_render_plugin_settings_page() {
     <h2>Conditional Payments for Woocommerce</h2>
     <form action="options.php" method="post">
         <?php
-        settings_fields( 'dbi_example_plugin_options' );
-        do_settings_sections( 'dbi_example_plugin' ); ?>
+        settings_fields( 'cpfw_plugin_options' );
+        do_settings_sections( 'cpfw_plugin_page' ); ?>
         <input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e( 'Save' ); ?>" />
     </form>
     <?php
@@ -34,10 +34,10 @@ function cpfw_render_plugin_settings_page() {
 
 
 function dbi_register_settings() {
-    register_setting( 'dbi_example_plugin_options', 'dbi_example_plugin_options', 'cpfw_options_update_validate' );
-    add_settings_section( 'api_settings', 'Settings', 'dbi_plugin_section_text', 'dbi_example_plugin' );
+    register_setting( 'cpfw_plugin_options', 'cpfw_plugin_options', 'cpfw_options_update_validate' );
+    add_settings_section( 'cpfw_api_settings', 'Settings', 'cpfw_plugin_section_text', 'cpfw_plugin_page' );
 
-    add_settings_field( 'dbi_plugin_setting_start_date', 'Restrictions', 'dbi_plugin_setting_start_date', 'dbi_example_plugin', 'api_settings' );
+    add_settings_field( 'cpfw_plugin_fields', 'Restrictions', 'cpfw_plugin_fields_render', 'cpfw_plugin_page', 'cpfw_api_settings' );
 }
 add_action( 'admin_init', 'dbi_register_settings' );
 
@@ -50,13 +50,13 @@ function cpfw_options_update_validate( $input ): array {
 }
 
 
-function dbi_plugin_section_text() {
+function cpfw_plugin_section_text() {
     echo '<p>Here you can configure payment methods to be displayed based on selected shipping method.</p>';
 }
 
-function dbi_plugin_setting_start_date() {
+function cpfw_plugin_fields_render() {
 
-    $options = get_option( 'dbi_example_plugin_options' );
+    $options = get_option( 'cpfw_plugin_options' );
     $restrictions = $options['restrictions'] ?? [];
 
     /**
@@ -86,7 +86,7 @@ function dbi_plugin_setting_start_date() {
                         ?>
                         <div style="margin-bottom: .3em">
                             <label>
-                                <input <?php echo $isChecked ? " checked " : "";?> name="dbi_example_plugin_options[restrictions][<?php echo $paymentMethod->id;?>][]" value="<?php echo $shippingOption->id;?>" type="checkbox" autocomplete="off" />
+                                <input <?php echo $isChecked ? " checked " : "";?> name="cpfw_plugin_options[restrictions][<?php echo $paymentMethod->id;?>][]" value="<?php echo $shippingOption->id;?>" type="checkbox" autocomplete="off" />
                                 <?php echo $shippingOption->get_method_title();?>
                             </label>
                         </div>
